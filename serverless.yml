@@ -1,0 +1,53 @@
+service: lab-examination-system-server
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+
+functions:
+  createSubject:
+    handler: src/controllers/createSubject.handler
+    events:
+      - http:
+          path: subjects
+          method: post
+
+  getSubjects:
+    handler: src/controllers/getSubjects.handler
+    events:
+      - http:
+          path: subjects
+          method: get
+
+  connect:
+    handler: src/controllers/connect.handler
+    events:
+      - websocket:
+          route: $connect
+
+  disconnect:
+    handler: src/controllers/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+
+  default:
+    handler: src/controllers/default.handler
+    events:
+      - websocket:
+          route: $default
+
+resources:
+  Resources:
+    SubjectsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Subjects
+        AttributeDefinitions:
+          - AttributeName: subjectId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: subjectId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
