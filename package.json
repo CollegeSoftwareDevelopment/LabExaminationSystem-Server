@@ -1,5 +1,5 @@
 {
-  "name": "lab-examination-system-server",
+  "name": "lab-examination-system-api",
   "version": "1.0.0",
   "description": "Lab Examination System backend",
   "main": "server.js",

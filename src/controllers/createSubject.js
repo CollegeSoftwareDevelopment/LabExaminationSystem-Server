@@ -3,11 +3,11 @@ const uuid = require('uuid');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = async event => {
+exports.handler = async (event) => {
   const data = JSON.parse(event.body);
 
   const params = {
-    TableName: 'Subjects',
+    TableName: process.env.TABLE_NAME,
     Item: {
       subjectId: uuid.v4(),
       name: data.name,

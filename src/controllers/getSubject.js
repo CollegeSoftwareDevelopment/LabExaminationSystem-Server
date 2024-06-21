@@ -2,9 +2,9 @@ const AWS = require('aws-sdk');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = async event => {
+exports.handler = async () => {
   const params = {
-    TableName: 'Subjects'
+    TableName: process.env.TABLE_NAME
   };
 
   try {

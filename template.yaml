@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  CreateSubjectFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/controllers/createSubject.handler
+      Runtime: nodejs20.x
+      CodeUri: .npm
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SubjectsTable
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /subjects
+            Method: post
+
+  GetSubjectsFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/controllers/getSubjects.handler
+      Runtime: nodejs20.x
+      CodeUri: .
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref SubjectsTable
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /subjects
+            Method: get
+
+  SubjectsTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'Subjects'
+      AttributeDefinitions:
+        - AttributeName: 'subjectId'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'subjectId'
+          KeyType: 'HASH'
+      BillingMode: 'PAY_PER_REQUEST'
